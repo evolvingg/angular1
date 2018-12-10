@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Example - example-guide-concepts-2-production</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+</head>
+<body >
+  <div ng-app="invoice1" ng-controller="InvoiceController as invoice">
+  <b>Invoice:</b>
+  <div>
+    Quantity: <input type="number" min="0" ng-model="invoice.qty" required >
+  </div>
+  <div>
+    Costs: <input type="number" min="0" ng-model="invoice.cost" required >
+    <select ng-model="invoice.inCurr">
+      <option ng-repeat="c in invoice.currencies">{{c}}</option>
+    </select>
+  </div>
+  <div>
+    <b>Total:</b>
+    <span ng-repeat="c in invoice.currencies">
+      {{invoice.total(c) | currency:c}}
+    </span><br>
+    <button class="btn" ng-click="invoice.pay()">Pay</button>
+  </div>
+</div>
+</body>
+
+<script>
+  
+  (function(angular){
+angular.module('invoice1',[]).controller('InvoiceController',function InvoiceController(){
+    this.qty=2;
+    this.cost=10;
+    this.inCurr="INR";
+    this.currencies=["INR","USD","EUR"];
+    this.usedForeignRates={
+      INR:1,
+      USD:7,
+      EUR:6.7
+    };
+    this.total = function(curCurrency){
+      return this.convertCurrency(this.cost * this.qty,curCurren,this.inCurr);
+    };
+    this.convertCurrency = function(amt,selected,base){
+      return ((amt*selected)/base);
+    };
+    this.pay = function(){
+      alert('Thanku')
+    }
+})
+  })(window.angular);
+
+
+</script>
+
+</html>
+
+<!-- 
+Copyright 2018 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+-->
